@@ -1,0 +1,7 @@
+# mengecualikan file
+db.sqlite3
+manage.py
+
+# mengecualikan folder
+/uinic/
+/staticfiles/
