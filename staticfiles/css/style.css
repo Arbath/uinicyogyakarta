@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hero-section {
+    background-image: url('/static/images/walppaper.jpg');
+}
+
+body {
+    background-color: #000814;
+    color: #e0e1dd;
+}
+.tech-bg {
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23000814"/><path d="M0 50 L50 0 L100 50 L50 100 Z" fill="%230466c8" fill-opacity="0.1"/></svg>');
+    background-size: 20px 20px;
+}
+.glow {
+    text-shadow: 0 0 10px #4cc9f0, 0 0 20px #4cc9f0, 0 0 30px #4cc9f0;
+}
+.card {
+    background: linear-gradient(145deg, #001d3d, #003566);
+    border: 1px solid #0466c8;
+}
+.card:hover {
+    box-shadow: 0 0 15px #4cc9f0;
+}

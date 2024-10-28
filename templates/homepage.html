@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Hero Section -->
+    <section class="bg-cover hero-home hero-section bg-center h-screen flex items-center justify-center" style="background-image: url({{home.background.url}});">
+        <div class="h-full w-full bg-black bg-opacity-60 flex items-center justify-center">
+            <h2 class="text-4xl md:text-6xl text-white font-bold text-center px-4 glow">{{home.title}}</h2>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <!-- About Section -->
+        <div id="about" class="text-center mb-16">
+            <h3 class="text-3xl font-semibold mb-6 glow">About Us</h3>
+            <p class="text-lg">{{home.deskripsi}}</p>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events" class="text-center mb-16">
+            <h3 class="text-3xl font-semibold mb-6 glow">Events</h3>
+            <p class="text-lg mb-8">{{home.desk_event}}</p>
+            
+            <!-- Cards Section -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card Event -->
+                {% for event in event %}
+                <a href="{% url 'event_detail' event_id=event.id %}">
+                    <div class="card rounded-lg shadow-lg overflow-hidden transition duration-300">
+                        <img src="{{event.background_image.url}}" alt="AI Workshop" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold mb-2 text-blue-300">{{event.title}}</h4>
+                            <p class="text-gray-300">{{event.description}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Contact Section -->
+    <div id="contact" class=" mt-16">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row md:space-x-6">
+                <!-- Google Maps (Right Column) -->
+                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-lg w-full md:w-1/2">
+                    <div class="relative" style="padding-top: 56.25%;">
+                        <iframe src="{{home.maps}}" class="absolute top-0 left-0 w-full h-full border-none" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+                
+                <!-- Contact Information (Left Column) -->
+                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-lg w-full md:mb-0">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Information</h2>
+                    <p class="text-gray-600 mb-4"><strong>Address:</strong> {{ home.alamat }}</p>
+                    <p class="text-gray-600 mb-4"><strong>Email:</strong><a href="mailto:{{event.contact}}"> {{ home.contact }}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+{% block javascript %}
+    {{ block.super }}
+    <!-- Your JavaScript for this template -->
+    <script src="{% static 'js/custom.js' %}" defer></script>
+    <!-- Or inline JavaScript -->
+    <script>
+        // Your JavaScript code here
+    </script>
+{% endblock javascript %}

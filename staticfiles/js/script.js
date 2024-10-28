@@ -1,4 +1,3 @@
-// develop by : https://github.com/ArbathAbdurrahman
 document.addEventListener("DOMContentLoaded", function() {
     const menu = document.getElementById('menu');
     const navbar = document.getElementById('navbar');

@@ -4,8 +4,8 @@
 
 /* develop by : https://github.com/ArbathAbdurrahman */
 
-.hero-section {
-    background-image: url('/static/images/walppaper.jpg');
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -29,4 +29,8 @@ body {
 }
 .card:hover {
     box-shadow: 0 0 15px #4cc9f0;
+}
+
+#navbar {
+    transition: transform 0.3s ease-in-out;
 }

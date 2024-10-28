@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Main Content -->
+    <section class="bg-cover hero-section bg-center h-screen flex items-center justify-center" style="background-image: url('{{event.background_image.url}}');">
+        <div class="h-full w-full bg-black bg-opacity-60 flex flex-col items-center justify-center space-y-4">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-6xl text-white font-bold text-center px-4 glow">{{event.title}}</h2>
+        </div>
+    </section>
+    <main class="container mx-auto p-4 mt-16">
+        
+        <!-- Event Description -->
+        <div id="About" class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300 text-center">About the Event</h2>
+            <p class="text-lg">{{event.description}}</p>
+        </div>
+        <!-- Event Date -->
+        <div class="text-xl md:text-2xl text-white mb-4">
+            {{event.date|date:"j F Y"}}
+        </div>
+        
+        <!-- Countdown Timer -->
+        <div id="countdown" class="text-white text-xl md:text-2xl flex space-x-4 text-center">
+            <div>
+                <span id="days">00</span>
+                <span class="text-sm">Days</span>
+            </div>
+            <div>
+                <span id="hours">00</span>
+                <span class="text-sm">Hours</span>
+            </div>
+            <div>
+                <span id="minutes">00</span>
+                <span class="text-sm">Minutes</span>
+            </div>
+            <div>
+                <span id="seconds">00</span>
+                <span class="text-sm">Seconds</span>
+            </div>
+        </div>
+        <p class="text-sm text-gray-500 mt-2"><a target="_blank" rel="noopener noreferrer" href="{{event.maps}}">Location: {{event.location}}</a></p>
+        <!-- Registration Button -->
+        <div class="text-center mb-12">
+            <a href="{{event.registration_link}}" target="_blank" rel="noopener noreferrer" class="bg-transparent text-blue-300 py-2 px-6 rounded-full border border-blue-600 hover:bg-blue-600 hover:text-white transition duration-300">Register Now</a>
+        </div>
+
+        <!-- Event Rundown -->
+        <div id="Rundown" class="mb-12">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300 text-center">Event Rundown</h2>
+            <div class="card rounded-lg p-6">
+                <ul class="space-y-4">
+                    {% for rundowns in rundown %}
+                    <li class="flex items-start">
+                        <span class="text-blue-400 font-semibold mr-4">
+                            {{ rundowns.time|date:"H:i" }}
+                            {% if rundowns.next_time %}
+                                - {{ rundowns.next_time|date:"H:i" }}
+                            {% else %}
+                            {% endif %}
+                        </span>
+                        <span>{{rundowns.activity}}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div id="FAQ" class="mx-auto mt-8">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300 text-center">FAQ</h2>
+            <!-- Question -->
+            {% for question in questions %}
+            <div class="border-b border-gray-300 py-4">
+                <button class="w-full text-left text-lg font-semibold text-blue-600 hover:text-blue-700" onclick="toggleAnswer('{{question.id}}')">
+                    {{question.question}}
+                </button>
+                <div id="answer-{{question.id}}" class="hidden mt-2 text-gray-400">
+                    {{question.answer}}
+                </div>
+            </div>
+            {% endfor %}
+    
+        <!-- Sponsorship -->
+        <div id="Sponsorship" >
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300 text-center">Sponsors</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {% for sponsor in sponsors %}
+                <a href="{{sponsor.link}}">
+                    <div class="bg-transparent p-4 rounded-lg flex items-center justify-center">
+                        <img src="{{sponsor.logo.url}}" alt="{{sponsor.name}}" class="max-h-16">
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block javascript %}
+    {{ block.super }}
+    <!-- Your JavaScript for this template -->
+    <script src="{% static 'js/custom.js' %}" defer></script>
+    <!-- Or inline JavaScript -->
+    <!-- JavaScript to handle the toggle -->
+    <script>
+        function toggleAnswer(id) {
+            var answer = document.getElementById('answer-' + id);
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                answer.classList.add('block');
+            } else {
+                answer.classList.remove('block');
+                answer.classList.add('hidden');
+            }
+        }
+        function updateCountdown() {
+            const eventDate = new Date("{{event.date|date:'Y-m-d H:i:s'}}").getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days.toString().padStart(2, '0');
+            document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown").innerHTML = "Event has started!";
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+{% endblock javascript %}
