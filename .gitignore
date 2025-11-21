@@ -3,3 +3,4 @@ db.sqlite3
 
 # mengecualikan folder
 /atmin/
+node_modules/
